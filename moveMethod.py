@@ -1,8 +1,8 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-09 20:26:10
-Description:
+LastEditTime: 2023-06-09 20:28:53
+Description: move methods
 '''
 from baseDefine import *
 import viewUI as ui
@@ -370,9 +370,9 @@ if __name__ == '__main__':
     d = facetD
     l = facetL
     r = facetR
-    # printConsole(f, b, u, d, l, r)
-    # printUI(f, b, u, d, l, r)
+    # printTml(f, b, u, d, l, r)
+    # ui.printUI(f, b, u, d, l, r)
     # singleStep(f, b, u, d, l, r)
     chs = input('move opt: ')
     # chl = ['U2', 'F', "B'", 'L']
-    multiStep(chs, f, b, u, d, l, r)
+    multiStep(chs, f, b, u, d, l, r, False)

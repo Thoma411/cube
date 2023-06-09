@@ -7,5 +7,6 @@ Description:
 import scrambler as sm
 import moveMethod as mm
 
-s1 = sm.genScmb3(sm.SCM_LEN_MIN, sm.SCM_LEN_MAX)
-mm.multiStep(s1)
+if __name__ == '__main__':
+    s1 = sm.genScmb3(sm.SCM_LEN_MIN, sm.SCM_LEN_MAX)
+    mm.multiStep(s1)
