@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-09 11:07:34
-LastEditTime: 2023-06-09 17:42:59
+LastEditTime: 2023-06-09 17:52:10
 Description:
 '''
 import random as rd
@@ -21,7 +21,7 @@ optDict = {
 }
 
 
-def genScmb(lmin: int, lmax: int):  # 生成打乱公式
+def genScmb3(lmin: int, lmax: int):  # 生成3阶打乱公式
     '''
     生成算法应满足以下两点:\n
     1.任意连续两次选择的移动操作不得来自同一方位列表(即禁止"... U2 U' ..."一类操作的出现)\n
@@ -51,5 +51,5 @@ def genScmb(lmin: int, lmax: int):  # 生成打乱公式
 
 if __name__ == '__main__':
     for _ in range(20):
-        s1 = genScmb(17, 20)
+        s1 = genScmb3(17, 20)
         print(s1, len(s1))
