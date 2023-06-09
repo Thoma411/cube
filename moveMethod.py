@@ -1,11 +1,10 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-09 20:24:55
+LastEditTime: 2023-06-09 20:26:10
 Description:
 '''
 from baseDefine import *
-import numpy as np
 import viewUI as ui
 
 
