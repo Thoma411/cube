@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-08 23:48:17
+LastEditTime: 2023-06-09 18:17:29
 Description:
 '''
 
@@ -323,48 +323,48 @@ def printUI(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状�
     root.mainloop()
 
 
-def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 移动匹配
+def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 移动匹配
     # F moves
-    if mv == "f":
+    if mv == "F":
         f, u, r, d, l = moveF(f, u, r, d, l)
-    elif mv == "f2":
+    elif mv == "F2":
         f, u, r, d, l = moveF2(f, u, r, d, l)
-    elif mv == "f'":
+    elif mv == "F'":
         f, u, r, d, l = moveF_(f, u, r, d, l)
     # B moves
-    elif mv == "b":
+    elif mv == "B":
         b, u, r, d, l = moveB(b, u, r, d, l)
-    elif mv == "b2":
+    elif mv == "B2":
         b, u, r, d, l = moveB2(b, u, r, d, l)
-    elif mv == "b'":
+    elif mv == "B'":
         b, u, r, d, l = moveB_(b, u, r, d, l)
     # U moves
-    elif mv == "u":
+    elif mv == "U":
         u, f, r, b, l = moveU(u, f, r, b, l)
-    elif mv == "u2":
+    elif mv == "U2":
         u, f, r, b, l = moveU2(u, f, r, b, l)
-    elif mv == "u'":
+    elif mv == "U'":
         u, f, r, b, l = moveU_(u, f, r, b, l)
     # D moves
-    elif mv == "d":
+    elif mv == "D":
         d, f, r, b, l = moveD(d, f, r, b, l)
-    elif mv == "d2":
+    elif mv == "D2":
         d, f, r, b, l = moveD2(d, f, r, b, l)
-    elif mv == "d'":
+    elif mv == "D'":
         d, f, r, b, l = moveD_(d, f, r, b, l)
     # L moves
-    elif mv == "l":
+    elif mv == "L":
         l, f, u, b, d = moveL(l, f, u, b, d)
-    elif mv == "l2":
+    elif mv == "L2":
         l, f, u, b, d = moveL2(l, f, u, b, d)
-    elif mv == "l'":
+    elif mv == "L'":
         l, f, u, b, d = moveL_(l, f, u, b, d)
     # R moves
-    elif mv == "r":
+    elif mv == "R":
         r, f, u, b, d = moveR(r, f, u, b, d)
-    elif mv == "r2":
+    elif mv == "R2":
         r, f, u, b, d = moveR2(r, f, u, b, d)
-    elif mv == "r'":
+    elif mv == "R'":
         r, f, u, b, d = moveR_(r, f, u, b, d)
     # settings
     elif mv == "0":
@@ -373,30 +373,42 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  
         print('not a move.')
         return None
     # os.system('cls')
-    printTer(f, b, u, d, l, r)
+    if outFlag:
+        printTer(f, b, u, d, l, r)
     return f, b, u, d, l, r
 
 
-def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 单步移动
+def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 单步移动
+    outRet = True
     while 1:
-        moves_str = input('move opt: ')
+        moves_str = input('move opt: ').upper()
         move_ls = moves_str.split()
         print('move-list:', move_ls)
         for mv in move_ls:
-            ret = moveMatch(mv, f, b, u, d, l, r)
-            if ret is not None:
-                f, b, u, d, l, r = ret
+            inRet = moveMatch(mv, f, b, u, d, l, r, outFlag)
+            if inRet is not None:
+                f, b, u, d, l, r = inRet
                 printUI(f, b, u, d, l, r)
             else:
+                outRet = False
                 break
+        if not outRet:
+            break
 
 
-def multiStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 多步移动
-    moves_str = input('move opt: ').lower()
-    move_ls = moves_str.split()
+def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 多步移动
+    move_ls = None
+    if type(mvs) == str:  # 类型识别与转换
+        moves_str = mvs.upper()
+        move_ls = moves_str.split()
+    elif type(mvs) == list:
+        move_ls = mvs
+    else:
+        print('unexpected type of "mvs"')
     print('move-list:', move_ls)
+
     for mv in move_ls:
-        ret = moveMatch(mv, f, b, u, d, l, r)
+        ret = moveMatch(mv, f, b, u, d, l, r, outFlag)
         if ret is not None:
             f, b, u, d, l, r = ret
         else:
@@ -425,5 +437,7 @@ if __name__ == '__main__':
     r = facetR
     # printConsole(f, b, u, d, l, r)
     # printUI(f, b, u, d, l, r)
-    # singleStep(f, b, u, d, l, r)
-    multiStep(f, b, u, d, l, r)
+    singleStep(f, b, u, d, l, r)
+    # chs = input('move opt: ')
+    # chl = ['U2', 'F', "B'", 'L']
+    # multiStep(chs, f, b, u, d, l, r)
