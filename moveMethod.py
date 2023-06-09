@@ -1,55 +1,12 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-09 20:14:34
+LastEditTime: 2023-06-09 20:24:55
 Description:
 '''
-
-import os
+from baseDefine import *
 import numpy as np
-import tkinter as tk
-
-# *基本项
-OD = 3  # 阶数
-ROW1 = 0  # U层
-ROW2 = 1  # E层
-ROW3 = 2  # D层
-COL1 = 0  # L层
-COL2 = 1  # M层
-COL3 = 2  # R层
-
-# *块颜色
-NULTMP = -1  # 临时交换用 区分其他颜色
-WHT = 0
-YEL = 5
-GRE = 1
-BLU = 4
-RED = 2
-ORG = 3
-
-# *显示设置
-SL = 20  # 方形边长
-OX = 90  # 定位点x
-OY = 90  # 定位点y
-IOFF_X = 10  # 面与面间的基础偏移量x
-IOFF_Y = 10  # 面与面间的基础偏移量y
-
-OFL_X = OX-IOFF_X-OD*SL  # L偏移量x
-OFR_X = OX+OD*SL+IOFF_X  # R偏移量x
-OFB_X = OX+(OD*SL+IOFF_X)*2  # B偏移量x
-OFU_Y = OY-IOFF_Y-OD*SL  # U偏移量y
-OFD_Y = OX+OD*SL+IOFF_Y  # D偏移量y
-
-# *颜色对照表
-COLORF = ['white', 'green', 'red', 'orange', 'blue', 'yellow']
-
-# *初始化各面
-facetF = np.full((OD, OD), GRE)
-facetB = np.full((OD, OD), BLU)
-facetU = np.full((OD, OD), WHT)
-facetD = np.full((OD, OD), YEL)
-facetL = np.full((OD, OD), ORG)
-facetR = np.full((OD, OD), RED)
+import viewUI as ui
 
 
 def rtt(mtx, degree=1):  # 矩阵旋转
@@ -302,27 +259,6 @@ def printTml(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状
     print()
 
 
-def printUI(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状态输出至UI
-    root = tk.Tk()
-    cv = tk.Canvas(root)
-    cv.pack()
-    for fi in range(OD):
-        for fj in range(OD):
-            cv.create_rectangle(OX+fi*SL, OY+fj*SL, OX+(fi+1)*SL, OY+(fj+1)*SL,
-                                fill=COLORF[f[fj][fi]], outline='black')
-            cv.create_rectangle(OFB_X+fi*SL, OY+fj*SL, OFB_X+(fi+1)*SL, OY+(fj+1)*SL,
-                                fill=COLORF[b[fj][fi]], outline='black')
-            cv.create_rectangle(OX+fi*SL, OFU_Y+fj*SL, OX+(fi+1)*SL, OFU_Y+(fj+1)*SL,
-                                fill=COLORF[u[fj][fi]], outline='black')
-            cv.create_rectangle(OX+fi*SL, OFD_Y+fj*SL, OX+(fi+1)*SL, OFD_Y+(fj+1)*SL,
-                                fill=COLORF[d[fj][fi]], outline='black')
-            cv.create_rectangle(OFL_X+fi*SL, OY+fj*SL, OFL_X+(fi+1)*SL, OY+(fj+1)*SL,
-                                fill=COLORF[l[fj][fi]], outline='black')
-            cv.create_rectangle(OFR_X+fi*SL, OY+fj*SL, OFR_X+(fi+1)*SL, OY+(fj+1)*SL,
-                                fill=COLORF[r[fj][fi]], outline='black')
-    root.mainloop()
-
-
 def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 移动匹配
     # F moves
     if mv == "F":
@@ -388,7 +324,7 @@ def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFl
             inRet = moveMatch(mv, f, b, u, d, l, r, outFlag)
             if inRet is not None:
                 f, b, u, d, l, r = inRet
-                printUI(f, b, u, d, l, r)
+                ui.printUI(f, b, u, d, l, r)
             else:
                 outRet = False
                 break
@@ -413,7 +349,7 @@ def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, o
             f, b, u, d, l, r = ret
         else:
             break
-    printUI(f, b, u, d, l, r)
+    ui.printUI(f, b, u, d, l, r)
 
 
 '''
