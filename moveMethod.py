@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-09 18:17:29
+LastEditTime: 2023-06-09 20:14:34
 Description:
 '''
 
@@ -292,7 +292,7 @@ def resetFacet(f, b, u, d, l, r):  # 重置状态
     return f, b, u, d, l, r
 
 
-def printTer(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状态输出至terminal
+def printTml(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状态输出至terminal
     frbl = np.concatenate((l, f, r, b), axis=1)
     for _u in u:
         print('      ', _u)
@@ -374,7 +374,7 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
         return None
     # os.system('cls')
     if outFlag:
-        printTer(f, b, u, d, l, r)
+        printTml(f, b, u, d, l, r)
     return f, b, u, d, l, r
 
 
@@ -437,7 +437,7 @@ if __name__ == '__main__':
     r = facetR
     # printConsole(f, b, u, d, l, r)
     # printUI(f, b, u, d, l, r)
-    singleStep(f, b, u, d, l, r)
-    # chs = input('move opt: ')
+    # singleStep(f, b, u, d, l, r)
+    chs = input('move opt: ')
     # chl = ['U2', 'F', "B'", 'L']
-    # multiStep(chs, f, b, u, d, l, r)
+    multiStep(chs, f, b, u, d, l, r)
