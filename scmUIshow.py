@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-01 22:44:04
-LastEditTime: 2023-06-15 00:17:18
+LastEditTime: 2023-06-15 00:47:22
 Description: 
 '''
 from baseDefine import *
@@ -41,6 +41,7 @@ def uMain():
         algm.config(text=scm_str)
 
     root = tk.Tk()
+    root.title('Cube Scrambles Displayer')
     root.geometry('400x300')
     root.resizable(False, False)
     cv = tk.Canvas(root)
