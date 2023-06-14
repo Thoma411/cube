@@ -1,11 +1,11 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-09 20:28:53
+LastEditTime: 2023-06-14 23:14:56
 Description: move methods
 '''
 from baseDefine import *
-import viewUI as ui
+# import viewUI as ui
 
 
 def rtt(mtx, degree=1):  # 矩阵旋转
@@ -323,7 +323,7 @@ def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFl
             inRet = moveMatch(mv, f, b, u, d, l, r, outFlag)
             if inRet is not None:
                 f, b, u, d, l, r = inRet
-                ui.printUI(f, b, u, d, l, r)
+                # ui.printUI(f, b, u, d, l, r)
             else:
                 outRet = False
                 break
@@ -348,7 +348,8 @@ def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, o
             f, b, u, d, l, r = ret
         else:
             break
-    ui.printUI(f, b, u, d, l, r)
+    # ui.printUI(f, b, u, d, l, r)
+    return f, b, u, d, l, r
 
 
 '''
