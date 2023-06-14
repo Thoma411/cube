@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-01 22:44:04
-LastEditTime: 2023-06-14 23:56:35
+LastEditTime: 2023-06-15 00:17:18
 Description: 
 '''
 from baseDefine import *
@@ -29,7 +29,7 @@ def printUI(cv: tk.Canvas, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=f
 
 def updScmUI(cv: tk.Canvas):  # 刷新打乱状态与显示UI
     scm = sm.genScmb3(sm.SCM_LEN_MIN, sm.SCM_LEN_MAX)
-    f, b, u, d, l, r = mm.multiStep(scm)
+    f, b, u, d, l, r = mm.multiStep(mvs=scm, outFlag=OUT_NONE)
     printUI(cv, f, b, u, d, l, r)
     return scm
 

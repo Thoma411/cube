@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-14 23:14:56
+LastEditTime: 2023-06-15 00:16:17
 Description: move methods
 '''
 from baseDefine import *
@@ -258,7 +258,7 @@ def printTml(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR):  # 状
     print()
 
 
-def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 移动匹配
+def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=OUT_STAT):  # 移动匹配
     # F moves
     if mv == "F":
         f, u, r, d, l = moveF(f, u, r, d, l)
@@ -305,20 +305,22 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
     elif mv == "0":
         f, b, u, d, l, r = resetFacet(f, b, u, d, l, r)
     else:
-        print('not a move.')
+        if outFlag >= OUT_ERRO:
+            print('not a move.')
         return None
     # os.system('cls')
-    if outFlag:
+    if outFlag == OUT_STAT:
         printTml(f, b, u, d, l, r)
     return f, b, u, d, l, r
 
 
-def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 单步移动
+def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=OUT_STAT):  # 单步移动
     outRet = True
     while 1:
         moves_str = input('move opt: ').upper()
         move_ls = moves_str.split()
-        print('move-list:', move_ls)
+        if outFlag >= OUT_MVLS:
+            print('move-list:', move_ls)
         for mv in move_ls:
             inRet = moveMatch(mv, f, b, u, d, l, r, outFlag)
             if inRet is not None:
@@ -331,16 +333,18 @@ def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFl
             break
 
 
-def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=True):  # 多步移动
+def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=OUT_STAT):  # 多步移动
     move_ls = None
     if type(mvs) == str:  # 类型识别与转换
         moves_str = mvs.upper()
         move_ls = moves_str.split()
     elif type(mvs) == list:
         move_ls = mvs
-    else:
-        print('unexpected type of "mvs"')
-    print('move-list:', move_ls)
+    else:  # 未知类型
+        if outFlag >= OUT_ERRO:
+            print('unexpected type of "mvs"')
+    if outFlag >= OUT_MVLS:
+        print('move-list:', move_ls)
 
     for mv in move_ls:
         ret = moveMatch(mv, f, b, u, d, l, r, outFlag)
@@ -376,4 +380,4 @@ if __name__ == '__main__':
     # singleStep(f, b, u, d, l, r)
     chs = input('move opt: ')
     # chl = ['U2', 'F', "B'", 'L']
-    multiStep(chs, f, b, u, d, l, r, False)
+    multiStep(chs, f, b, u, d, l, r)
