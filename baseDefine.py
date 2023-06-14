@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-09 20:17:57
-LastEditTime: 2023-06-09 20:21:46
+LastEditTime: 2023-06-15 00:11:22
 Description: 
 '''
 import numpy as np
@@ -47,3 +47,9 @@ facetU = np.full((OD, OD), WHT)
 facetD = np.full((OD, OD), YEL)
 facetL = np.full((OD, OD), ORG)
 facetR = np.full((OD, OD), RED)
+
+# *终端输出定义
+OUT_NONE = 0  # 不输出任何内容
+OUT_ERRO = 1  # 仅输出错误
+OUT_MVLS = 2  # 输出打乱公式&错误
+OUT_STAT = 3  # 输出逐步打乱状态(全部输出)
