@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-15 00:16:17
+LastEditTime: 2023-06-15 00:46:19
 Description: move methods
 '''
 from baseDefine import *
@@ -378,6 +378,6 @@ if __name__ == '__main__':
     # printTml(f, b, u, d, l, r)
     # ui.printUI(f, b, u, d, l, r)
     # singleStep(f, b, u, d, l, r)
-    chs = input('move opt: ')
+    # chs = input('move opt: ')
     # chl = ['U2', 'F', "B'", 'L']
-    multiStep(chs, f, b, u, d, l, r)
+    # multiStep(chs, f, b, u, d, l, r)
