@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-15 00:46:19
+LastEditTime: 2023-06-15 23:35:35
 Description: move methods
 '''
 from baseDefine import *
@@ -333,7 +333,9 @@ def singleStep(f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFl
             break
 
 
-def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=OUT_STAT):  # 多步移动
+def multiStep(mvs, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, outFlag=OUT_STAT, resetFlag=True):  # 多步移动
+    if resetFlag:  # 默认在多步操作前重置魔方状态
+        f, b, u, d, l, r = resetFacet(f, b, u, d, l, r)
     move_ls = None
     if type(mvs) == str:  # 类型识别与转换
         moves_str = mvs.upper()
