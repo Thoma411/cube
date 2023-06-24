@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-24 17:40:40
+LastEditTime: 2023-06-24 17:47:54
 Description: move methods
 '''
 from baseDefine import *
@@ -286,7 +286,7 @@ def moveS(u, r, d, l):  # S
     return u, r, d, l
 
 
-def moveS2(u, r, d, l):  # F2
+def moveS2(u, r, d, l):  # S2
     tmp_rowu = np.copy(u[ROW2])  # U-D互换
     u[ROW2] = d[ROW2]
     u[ROW2] = u[ROW2, ::-1]  # D->U值反转
@@ -300,7 +300,7 @@ def moveS2(u, r, d, l):  # F2
     return u, r, d, l
 
 
-def moveS_(u, r, d, l):  # F'
+def moveS_(u, r, d, l):  # S'
     tmp = np.full((OD, OD), NULTMP)
     tmp[ROW2] = u[ROW2]
     rttr = rtt(r, -1)  # 将R面临时旋转, 化列为行
@@ -312,6 +312,34 @@ def moveS_(u, r, d, l):  # F'
     tmp = rtt(tmp, -1)  # 将tmpU面临时旋转, 化行为列
     l[:, COL2] = tmp[:, COL2]
     return u, r, d, l
+
+
+def moveE(f, r, b, l):  # E
+    tmp_rowf = np.copy(f[ROW2])
+    f[ROW2] = l[ROW2]
+    l[ROW2] = b[ROW2]
+    b[ROW2] = r[ROW2]
+    r[ROW2] = tmp_rowf
+    return f, r, b, l
+
+
+def moveE2(f, r, b, l):  # E2
+    tmp_rowf = np.copy(f[ROW2])
+    f[ROW2] = b[ROW2]
+    b[ROW2] = tmp_rowf
+    tmp_rowl = np.copy(l[ROW2])
+    l[ROW2] = r[ROW2]
+    r[ROW2] = tmp_rowl
+    return f, r, b, l
+
+
+def moveE_(f, r, b, l):  # E'
+    tmp_rowf = np.copy(f[ROW2])
+    f[ROW2] = r[ROW2]
+    r[ROW2] = b[ROW2]
+    b[ROW2] = l[ROW2]
+    l[ROW2] = tmp_rowf
+    return f, r, b, l
 
 
 def resetFacet(f, b, u, d, l, r):  # 重置状态
@@ -391,6 +419,13 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
         u, r, d, l = moveS2(u, r, d, l)
     elif mv == "S'":
         u, r, d, l = moveS_(u, r, d, l)
+    # E moves
+    elif mv == "E":
+        f, r, b, l = moveE(f, r, b, l)
+    elif mv == "E2":
+        f, r, b, l = moveE2(f, r, b, l)
+    elif mv == "E'":
+        f, r, b, l = moveE_(f, r, b, l)
     # settings
     elif mv == "0":
         f, b, u, d, l, r = resetFacet(f, b, u, d, l, r)
