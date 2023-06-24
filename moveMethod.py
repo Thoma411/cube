@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-15 23:35:35
+LastEditTime: 2023-06-24 17:40:40
 Description: move methods
 '''
 from baseDefine import *
@@ -238,6 +238,82 @@ def moveR_(r, f, u, b, d):  # R'
     return r, f, u, b, d
 
 
+def moveM(f, d, b, u):  # M
+    tmp_colf = np.copy(f[:, COL2])
+    f[:, COL2] = u[:, COL2]
+    u[:, COL2] = b[:, COL2]  # B面相反
+    u[:, COL2] = u[::-1, COL2]  # *B->U面值反转
+    b[:, COL2] = d[:, COL2]
+    b[:, COL2] = b[::-1, COL2]  # *D->B面值反转
+    d[:, COL2] = tmp_colf
+    return f, d, b, u
+
+
+def moveM2(f, d, b, u):  # M2
+    tmp_colu = np.copy(u[:, COL2])  # U-D互换
+    u[:, COL2] = d[:, COL2]
+    d[:, COL2] = tmp_colu
+    tmp_colf = np.copy(f[:, COL2])  # F-B互换
+    f[:, COL2] = b[:, COL2]  # 位置相反
+    f[:, COL2] = f[::-1, COL2]  # 值反转
+    b[:, COL2] = tmp_colf
+    b[:, COL2] = b[::-1, COL2]  # 值反转
+    return f, d, b, u
+
+
+def moveM_(f, d, b, u):  # M'
+    tmp_colf = np.copy(f[:, COL2])
+    f[:, COL2] = d[:, COL2]
+    d[:, COL2] = b[:, COL2]  # B面相反
+    d[:, COL2] = d[::-1, COL2]  # *B->D面值反转
+    b[:, COL2] = u[:, COL2]
+    b[:, COL2] = b[::-1, COL2]  # *U->B面值反转
+    u[:, COL2] = tmp_colf
+    return f, d, b, u
+
+
+def moveS(u, r, d, l):  # S
+    tmp = np.full((OD, OD), NULTMP)
+    tmp[ROW2] = u[ROW2]
+    rttl = rtt(l, 1)  # 将L面临时旋转, 化列为行
+    u[ROW2] = rttl[ROW2]
+    rttd = rtt(d, 1)  # 将D面临时旋转, 化行为列
+    l[:, COL2] = rttd[:, COL2]
+    rttr = rtt(r, 1)  # 将L面临时旋转, 化列为行
+    d[ROW2] = rttr[ROW2]
+    tmp = rtt(tmp, 1)  # 将tmpU面临时旋转, 化行为列
+    r[:, COL2] = tmp[:, COL2]
+    return u, r, d, l
+
+
+def moveS2(u, r, d, l):  # F2
+    tmp_rowu = np.copy(u[ROW2])  # U-D互换
+    u[ROW2] = d[ROW2]
+    u[ROW2] = u[ROW2, ::-1]  # D->U值反转
+    d[ROW2] = tmp_rowu
+    d[ROW2] = d[ROW2, ::-1]  # U->D值反转
+    tmp_colr = np.copy(r[:, COL2])  # L-R互换
+    r[:, COL2] = l[:, COL2]
+    r[:, COL2] = r[::-1, COL2]  # L->R值反转
+    l[:, COL2] = tmp_colr
+    l[:, COL2] = l[::-1, COL2]  # R->L值反转
+    return u, r, d, l
+
+
+def moveS_(u, r, d, l):  # F'
+    tmp = np.full((OD, OD), NULTMP)
+    tmp[ROW2] = u[ROW2]
+    rttr = rtt(r, -1)  # 将R面临时旋转, 化列为行
+    u[ROW2] = rttr[ROW2]
+    rttd = rtt(d, -1)  # 将D面临时旋转, 化行为列
+    r[:, COL2] = rttd[:, COL2]
+    rttl = rtt(l, -1)  # 将L面临时旋转, 化列为行
+    d[ROW2] = rttl[ROW2]
+    tmp = rtt(tmp, -1)  # 将tmpU面临时旋转, 化行为列
+    l[:, COL2] = tmp[:, COL2]
+    return u, r, d, l
+
+
 def resetFacet(f, b, u, d, l, r):  # 重置状态
     f = np.full((OD, OD), GRE)
     b = np.full((OD, OD), BLU)
@@ -301,6 +377,20 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
         r, f, u, b, d = moveR2(r, f, u, b, d)
     elif mv == "R'":
         r, f, u, b, d = moveR_(r, f, u, b, d)
+    # M moves
+    elif mv == "M":
+        f, d, b, u = moveM(f, d, b, u)
+    elif mv == "M2":
+        f, d, b, u = moveM2(f, d, b, u)
+    elif mv == "M'":
+        f, d, b, u = moveM_(f, d, b, u)
+    # S moves
+    elif mv == "S":
+        u, r, d, l = moveS(u, r, d, l)
+    elif mv == "S2":
+        u, r, d, l = moveS2(u, r, d, l)
+    elif mv == "S'":
+        u, r, d, l = moveS_(u, r, d, l)
     # settings
     elif mv == "0":
         f, b, u, d, l, r = resetFacet(f, b, u, d, l, r)
