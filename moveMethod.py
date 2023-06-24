@@ -1,7 +1,7 @@
 '''
 Author: Thoma411
 Date: 2023-06-02 22:08:08
-LastEditTime: 2023-06-24 17:47:54
+LastEditTime: 2023-06-24 23:06:43
 Description: move methods
 '''
 from baseDefine import *
@@ -342,6 +342,57 @@ def moveE_(f, r, b, l):  # E'
     return f, r, b, l
 
 
+def mover(r, f, u, b, d):  # r
+    r, f, u, b, d = moveR(r, f, u, b, d)
+    f, d, b, u = moveM_(f, d, b, u)
+    return r, f, u, b, d
+
+
+def mover2(r, f, u, b, d):  # r2
+    r, f, u, b, d = moveR2(r, f, u, b, d)
+    f, d, b, u = moveM2(f, d, b, u)
+    return r, f, u, b, d
+
+
+def mover_(r, f, u, b, d):  # r'
+    r, f, u, b, d = moveR_(r, f, u, b, d)
+    f, d, b, u = moveM(f, d, b, u)
+    return r, f, u, b, d
+
+
+def movex(f, b, u, d, l, r):  # 整体x
+    l = rtt(l, -1)
+    r = rtt(r, 1)
+    tmpu = u
+    u = f
+    f = d
+    d = rtt(b, 2)  # B面值翻转->D面
+    b = rtt(tmpu, 2)  # U面值翻转->B面
+    return f, b, u, d, l, r
+
+
+def movey(f, b, u, d, l, r):  # 整体y
+    u = rtt(u, 1)
+    d = rtt(d, -1)
+    tmpf = f
+    f = r
+    r = b
+    b = l
+    l = tmpf
+    return f, b, u, d, l, r
+
+
+def movez(f, b, u, d, l, r):  # 整体z
+    f = rtt(f, 1)
+    b = rtt(b, -1)
+    tmpu = u
+    u = rtt(l, 1)
+    l = rtt(d, 1)
+    d = rtt(r, 1)
+    r = rtt(tmpu, 1)
+    return f, b, u, d, l, r
+
+
 def resetFacet(f, b, u, d, l, r):  # 重置状态
     f = np.full((OD, OD), GRE)
     b = np.full((OD, OD), BLU)
@@ -398,13 +449,19 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
         l, f, u, b, d = moveL2(l, f, u, b, d)
     elif mv == "L'":
         l, f, u, b, d = moveL_(l, f, u, b, d)
-    # R moves
+    # R/r moves
     elif mv == "R":
         r, f, u, b, d = moveR(r, f, u, b, d)
     elif mv == "R2":
         r, f, u, b, d = moveR2(r, f, u, b, d)
     elif mv == "R'":
         r, f, u, b, d = moveR_(r, f, u, b, d)
+    elif mv == "r":
+        r, f, u, b, d = mover(r, f, u, b, d)
+    elif mv == "r2":
+        r, f, u, b, d = mover2(r, f, u, b, d)
+    elif mv == "r'":
+        r, f, u, b, d = mover_(r, f, u, b, d)
     # M moves
     elif mv == "M":
         f, d, b, u = moveM(f, d, b, u)
@@ -426,6 +483,15 @@ def moveMatch(mv, f=facetF, b=facetB, u=facetU, d=facetD, l=facetL, r=facetR, ou
         f, r, b, l = moveE2(f, r, b, l)
     elif mv == "E'":
         f, r, b, l = moveE_(f, r, b, l)
+    # x moves
+    elif mv == "x":
+        f, b, u, d, l, r = movex(f, b, u, d, l, r)
+    # y moves
+    elif mv == "y":
+        f, b, u, d, l, r = movey(f, b, u, d, l, r)
+    # z moves
+    elif mv == "z":
+        f, b, u, d, l, r = movez(f, b, u, d, l, r)
     # settings
     elif mv == "0":
         f, b, u, d, l, r = resetFacet(f, b, u, d, l, r)
